@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ParkingAPI.Controllers  // upewnij się, że przestrzeń nazw jest zgodna z Twoim projektem
+namespace ParkingAPI.Controllers  
 {
     [Route("api/[controller]")]
     [ApiController]
