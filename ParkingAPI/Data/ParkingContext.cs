@@ -10,6 +10,7 @@ namespace ParkingAPI.Data
 
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
         public DbSet<Reservation>Reservations { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,5 +23,7 @@ namespace ParkingAPI.Data
                 .WithMany(p => p.Reservations)
                 .HasForeignKey(r => r.ParkingSpotId);
         }
+
+        
     }
 }
