@@ -1,4 +1,6 @@
-﻿namespace ParkingAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ParkingAPI.Models
 {
     public class ParkingSpot
     {
@@ -16,9 +18,24 @@
         public int ParkingSpotId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public bool Day { get; set; }
-        public bool Status { get; set; }
+        public int Day { get; set; }
+        public int Status { get; set; }
 
         public ParkingSpot? ParkingSpot { get; set; }
+    }
+
+    public class User
+    {
+        public int Id { get; set; }
+        [MaxLength(50)]
+        public string? Name { get; set; }
+        [MaxLength(50)]
+        public string? Surname { get; set; }
+        [MaxLength(100)]
+        public string? Email { get; set; }
+        [MaxLength(256)]
+        public string? Password { get; set; }
+        public int AdminUser { get; set; }
+        public DateTime RegistrationDate { get; set; }
     }
 }
