@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using ParkingAPI.Data;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ParkingContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 
 builder.Services.AddControllers();

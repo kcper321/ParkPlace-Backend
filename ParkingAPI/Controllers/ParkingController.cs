@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParkingAPI.Data;
 using ParkingAPI.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.IdentityModel.Tokens;
 
 namespace ParkingAPI.Controllers
 {
@@ -141,6 +144,44 @@ namespace ParkingAPI.Controllers
                 byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return Convert.ToBase64String(bytes);
             }
+        }
+
+        [HttpGet("users/me")]
+        public async Task<IActionResult> GetCurrentUser([FromQuery] string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(new { user.Id, user.Name, user.Surname, user.Email, user.AdminUser });
+        }
+
+        [HttpGet("reservations/active")]
+        public async Task<IActionResult> GetActiveReservations()
+        {
+            var activeReservations = await _context.Reservations
+                .Where(r => r.Status == 1)
+                .Include(r => r.ParkingSpot)
+                .ToListAsync();
+
+            if (!activeReservations.Any())
+            {
+                return NotFound("No active reservations found.");
+            }
+
+            var activeReservationsWithUser = activeReservations.Select(r => new
+            {
+                r.Id,
+                r.StartTime,
+                r.EndTime,
+                r.ParkingSpot,
+                r.UserId,
+                User = _context.Users.FirstOrDefault(u => u.Id == r.UserId)
+
+            }).ToList();
+            return Ok(activeReservationsWithUser);
         }
 
         
