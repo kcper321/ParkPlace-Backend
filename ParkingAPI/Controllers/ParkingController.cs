@@ -26,8 +26,21 @@ namespace ParkingAPI.Controllers
         }
 
         [HttpPost("reserve")]
-        public async Task<IActionResult> ReserveParkingSpot([FromBody] Reservation request)
+        public async Task<IActionResult> ReserveParkingSpot([FromBody] ReservationJson request)
         {
+
+            Reservation reservation = new Reservation()
+            {
+                EntireDay = request.EntireDay,
+                UserId = request.UserId,
+                ParkingSpotId = request.ParkingSpotId,
+                StartTime = request.StartTime,
+                EndTime = request.EndTime,
+                Status = 1
+
+            };
+
+
             var parkingSpot = await _context.ParkingSpots.FindAsync(request.ParkingSpotId);
             if (parkingSpot == null)
             {
@@ -35,21 +48,21 @@ namespace ParkingAPI.Controllers
             }
 
             bool isReserved = await _context.Reservations
-                .AnyAsync(r => r.ParkingSpotId == request.ParkingSpotId && r.Status == 1 && ((r.StartTime <= request.EndTime && r.EndTime >= request.StartTime) || r.Day == 1));
+                .AnyAsync(r => r.ParkingSpotId == request.ParkingSpotId && r.Status == 1 && ((r.StartTime <= request.EndTime && r.EndTime >= request.StartTime) || r.EntireDay == 1));
         
             if (isReserved)
             {
                 return Conflict("Parking spot is already reserved for this time.");
             }
-            var reservation = new Reservation
-            {
-                UserId = request.UserId,
-                ParkingSpotId = request.ParkingSpotId,
-                StartTime = request.StartTime,
-                EndTime = request.EndTime,
-                Day = request.Day,
-                Status = 1
-            };
+            //var reservation = new Reservation
+            //{
+            //    UserId = request.UserId,
+            //    ParkingSpotId = request.ParkingSpotId,
+            //    StartTime = request.StartTime,
+            //    EndTime = request.EndTime,
+            //    Day = request.Day,
+            //    Status = 1
+            //};
 
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
@@ -126,11 +139,11 @@ namespace ParkingAPI.Controllers
             return Ok("User registered successfully");
         }
 
-        [HttpGet("login")]
-        public async Task<IActionResult> Login([FromQuery] string email, [FromQuery] string password)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginJson request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null || user.Password != HashPassword(password))
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Login);
+            if (user == null || user.Password != HashPassword(request.Password))
             {
                 return Unauthorized("Invalid credencials");
             }
