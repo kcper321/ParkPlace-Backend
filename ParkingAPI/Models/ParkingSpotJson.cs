@@ -2,16 +2,15 @@
 
 namespace ParkingAPI.Models
 {
-    public class ParkingSpot
+    public class ParkingSpotJson
     {
         public int Id { get; set; }
         public int Floor { get; set; }
         public string? Zone { get; set; }
         public int Number { get; set; }
 
-        public List<Reservation>? Reservations { get; set; }
     }
-    public class Reservation
+    public class ReservationJson
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -21,10 +20,10 @@ namespace ParkingAPI.Models
         public int EntireDay { get; set; }
         public int Status { get; set; }
 
-        public ParkingSpot? ParkingSpot { get; set; }
+        public ParkingSpotJson? ParkingSpot { get; set; }
     }
 
-    public class User
+    public class UserJson
     {
         public int Id { get; set; }
         [MaxLength(50)]
