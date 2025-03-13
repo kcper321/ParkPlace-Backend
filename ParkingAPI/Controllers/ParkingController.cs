@@ -197,7 +197,7 @@ namespace ParkingAPI.Controllers
             return Ok(activeReservationsWithUser);
         }
 
-        [HttpGet("zones")]
+        [HttpGet("api/parking/zones")]
         public async Task<IActionResult> GetZones()
         {
             var zones = await _context.ParkingSpots
@@ -207,7 +207,7 @@ namespace ParkingAPI.Controllers
 
             return Ok(zones);
         }
-        [HttpGet("floors")]
+        [HttpGet("api/parking/floors")]
         public async Task<IActionResult> GetFloors()
         {
             var floors = await _context.ParkingSpots
