@@ -21,13 +21,13 @@ builder.Services.AddDbContext<ParkingContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddControllers();
+// builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddSwaggerGen();
 
-builder.Services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ParkingContext>()
-    .AddDefaultTokenProviders();
+// builder.Services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = true)
+//     .AddEntityFrameworkStores<ParkingContext>()
+//     .AddDefaultTokenProviders();
 
 var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:secret"]);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -96,7 +96,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
