@@ -10,7 +10,7 @@ namespace ParkingAPI.Data
 
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
         public DbSet<Reservation>Reservations { get; set; }
-        public DbSet<UserDb> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

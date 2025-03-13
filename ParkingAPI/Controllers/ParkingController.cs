@@ -1,21 +1,14 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParkingAPI.Data;
 using ParkingAPI.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParkingAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ParkingController : ControllerBase
     {
         private readonly ParkingContext _context;
@@ -122,42 +115,6 @@ namespace ParkingAPI.Controllers
             return Ok(availableSpots);
             //return Ok(availableSpots.ToList());
         }
-
-        // [HttpPost("register")]
-        // public async Task<IActionResult> Register([FromBody] User user)
-        // {
-        //     if (await _context.Users.AnyAsync(u => u.Email == user.Email))
-        //     {
-        //         return BadRequest("Email already in use");
-        //     }
-        //     user.Password = HashPassword(user.Password);
-        //     user.RegistrationDate = DateTime.UtcNow;
-
-        //     _context.Users.Add(user);
-        //     await _context.SaveChangesAsync();
-
-        //     return Ok("User registered successfully");
-        // }
-
-        // [HttpPost("login")]
-        // public async Task<IActionResult> Login([FromBody] LoginJson request)
-        // {
-        //     var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Login);
-        //     if (user == null || user.Password != HashPassword(request.Password))
-        //     {
-        //         return Unauthorized("Invalid credencials");
-        //     }
-        //     return Ok(new { Message = "Login Successful", user.Name, user.Surname, user.AdminUser });
-        // }
-
-        // private string HashPassword(string password)
-        // {
-        //     using (SHA256 sha256 = SHA256.Create())
-        //     {
-        //         byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-        //         return Convert.ToBase64String(bytes);
-        //     }
-        // }
 
         [HttpGet("users/me")]
         public async Task<IActionResult> GetCurrentUser([FromQuery] string email)
