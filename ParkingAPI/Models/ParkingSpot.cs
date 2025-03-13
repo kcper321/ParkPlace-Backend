@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace ParkingAPI.Models
 {
@@ -23,19 +24,25 @@ namespace ParkingAPI.Models
 
         public ParkingSpot? ParkingSpot { get; set; }
     }
-
-    public class User
+    public class UserDb
     {
         public int Id { get; set; }
-        [MaxLength(50)]
-        public string? Name { get; set; }
-        [MaxLength(50)]
-        public string? Surname { get; set; }
-        [MaxLength(100)]
-        public string? Email { get; set; }
-        [MaxLength(256)]
-        public string? Password { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
         public bool AdminUser { get; set; }
         public DateTime RegistrationDate { get; set; }
+    }
+    public class User: IdentityUser<int>
+    {
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public bool AdminUser { get; set; }
+    }
+    public class Role: IdentityRole<int>
+    {
+        public Role() { }
+        public Role(string roleName) { Name = roleName; }
     }
 }

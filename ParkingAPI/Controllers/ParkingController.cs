@@ -123,41 +123,41 @@ namespace ParkingAPI.Controllers
             //return Ok(availableSpots.ToList());
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] User user)
-        {
-            if (await _context.Users.AnyAsync(u => u.Email == user.Email))
-            {
-                return BadRequest("Email already in use");
-            }
-            user.Password = HashPassword(user.Password);
-            user.RegistrationDate = DateTime.UtcNow;
+        // [HttpPost("register")]
+        // public async Task<IActionResult> Register([FromBody] User user)
+        // {
+        //     if (await _context.Users.AnyAsync(u => u.Email == user.Email))
+        //     {
+        //         return BadRequest("Email already in use");
+        //     }
+        //     user.Password = HashPassword(user.Password);
+        //     user.RegistrationDate = DateTime.UtcNow;
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+        //     _context.Users.Add(user);
+        //     await _context.SaveChangesAsync();
 
-            return Ok("User registered successfully");
-        }
+        //     return Ok("User registered successfully");
+        // }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginJson request)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Login);
-            if (user == null || user.Password != HashPassword(request.Password))
-            {
-                return Unauthorized("Invalid credencials");
-            }
-            return Ok(new { Message = "Login Successful", user.Name, user.Surname, user.AdminUser });
-        }
+        // [HttpPost("login")]
+        // public async Task<IActionResult> Login([FromBody] LoginJson request)
+        // {
+        //     var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Login);
+        //     if (user == null || user.Password != HashPassword(request.Password))
+        //     {
+        //         return Unauthorized("Invalid credencials");
+        //     }
+        //     return Ok(new { Message = "Login Successful", user.Name, user.Surname, user.AdminUser });
+        // }
 
-        private string HashPassword(string password)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(bytes);
-            }
-        }
+        // private string HashPassword(string password)
+        // {
+        //     using (SHA256 sha256 = SHA256.Create())
+        //     {
+        //         byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+        //         return Convert.ToBase64String(bytes);
+        //     }
+        // }
 
         [HttpGet("users/me")]
         public async Task<IActionResult> GetCurrentUser([FromQuery] string email)
@@ -168,7 +168,7 @@ namespace ParkingAPI.Controllers
                 return NotFound("User not found.");
             }
 
-            return Ok(new { user.Id, user.Name, user.Surname, user.Email, user.AdminUser });
+            return Ok(new { user.Name, user.Surname, user.Email, user.AdminUser });
         }
 
         [HttpGet("reservations/active")]
