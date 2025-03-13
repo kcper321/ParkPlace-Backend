@@ -197,7 +197,27 @@ namespace ParkingAPI.Controllers
             return Ok(activeReservationsWithUser);
         }
 
-        
+        [HttpGet("zones")]
+        public async Task<IActionResult> GetZones()
+        {
+            var zones = await _context.ParkingSpots
+                .Select(p => p.Zone)
+                .Distinct()
+                .ToListAsync();
+
+            return Ok(zones);
+        }
+        [HttpGet("floors")]
+        public async Task<IActionResult> GetFloors()
+        {
+            var floors = await _context.ParkingSpots
+                .Select(p => p.Floor)
+                .Distinct()
+                .ToListAsync();
+
+            return Ok(floors);
+        }
+
     }
 
 }
